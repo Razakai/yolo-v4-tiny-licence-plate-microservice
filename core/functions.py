@@ -26,7 +26,8 @@ def crop_detections(img, data, width, height):
         cropped_img = np.expand_dims(cropped_img, axis=2)
         cropped_img = np.squeeze(cropped_img, axis=-1)
         # cropped_img = Image.fromarray(np.uint8((cropped_img + 1.0) * 127.5))
-        print(len(cropped_img), cropped_img.shape)
+
+        # eval() does not work on numpy arrays so have to convert to list
         detectionArr.append(cropped_img.tolist())
 
     if len(detectionArr) > 0:
