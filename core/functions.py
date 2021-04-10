@@ -6,7 +6,7 @@ from PIL import Image
 
 connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
 channel = connection.channel()
-channel.queue_declare(queue='baka')
+channel.queue_declare(queue='testingpredictions')
 
 def crop_detections(img, data, width, height):
     boxes, scores, classes, num_objects = data
@@ -25,7 +25,9 @@ def crop_detections(img, data, width, height):
         cropped_img = (cv2.cvtColor(cropped_img, cv2.COLOR_BGR2GRAY) / 127.5) - 1.0
         cropped_img = np.expand_dims(cropped_img, axis=2)
         cropped_img = np.squeeze(cropped_img, axis=-1)
-        # cropped_img = Image.fromarray(np.uint8((cropped_img + 1.0) * 127.5))
+        
+        #cropped_img = Image.fromarray(np.uint8((cropped_img + 1.0) * 127.5))
+        #cropped_img.show()
 
         # eval() does not work on numpy arrays so have to convert to list
         detectionArr.append(cropped_img.tolist())
@@ -37,7 +39,7 @@ def crop_detections(img, data, width, height):
 def send_images(detections):
     #for item in detections:
     channel.basic_publish(exchange='',
-                          routing_key='baka',
+                          routing_key='testingpredictions',
                           body=json.dumps({"detections": str(detections)}))
 
 

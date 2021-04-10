@@ -135,7 +135,7 @@ def detect_video(url):
         cv2.destroyAllWindows()
         return None
     except Exception as e:
-        print('oof')
+        print('oof', e)
         cv2.destroyAllWindows()
         return None
 
